@@ -1,0 +1,19 @@
+{% extends 'coal/base.html' %}
+{% block content %}
+<h2>Captured Mining Activity Data</h2>
+<p><strong>Date of Mining Activity:</strong> {{ mining_activity.date_of_activity }}</p>
+<p><strong>Type of Material Extracted:</strong> {{ mining_activity.material_extracted }}</p>
+<p><strong>Total Quantity Extracted (tons):</strong> {{ mining_activity.quantity_extracted }}</p>
+<p><strong>Total Energy Consumption (kWh):</strong> {{ mining_activity.energy_consumption }}</p>
+<p><strong>Total Fuel Consumption (liters):</strong> {{ mining_activity.fuel_consumption }}</p>
+<p><strong>Total Operational Hours:</strong> {{ mining_activity.operational_hours }}</p>
+<p><strong>Downtime Duration:</strong> {{ mining_activity.downtime_duration }}</p>
+<p><strong>Production Rate (tons/hour):</strong> {{ mining_activity.production_rate }}</p>
+<p><strong>Total Trucks Loaded:</strong> {{ mining_activity.trucks_loaded }}</p>
+<p><strong>Total Distance Mined (meters):</strong> {{ mining_activity.distance_mined }}</p><br>
+<p><strong>Total Emissions:</strong> {{ total_emissions }}</p>
+<img src="C:\Users\profm\OneDrive\Desktop\coal_project\coal_project\media\temp.png" alt="error">
+{% if error %}
+    <p><strong>{{ error }}</strong></p>
+{% endif %}
+{% endblock content %}

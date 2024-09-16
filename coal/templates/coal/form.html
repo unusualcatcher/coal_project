@@ -1,0 +1,187 @@
+{% extends 'coal/base.html' %}
+{% block title %}
+    <title>{{ title }}</title>
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Mining Activity Information</h2>
+
+    <form id="multiStepForm" action="" method="post">
+        {% csrf_token %}
+
+        <!-- General Activity Information -->
+        <div class="form-section" id="section1">
+            <h4>General Activity Information</h4>
+            <div class="form-group">
+                <label for="activity_date">Date of Mining Activity</label>
+                <input type="date" class="form-control" id="activity_date" name="activity_date" required>
+            </div>
+        </div>
+
+        <!-- Material and Extraction Information -->
+        <div class="form-section" id="section2">
+            <h4>Material and Extraction Information</h4>
+            <div class="form-group">
+                <label for="material_type">Type of Material Extracted</label>
+                <select class="form-control" id="material_type" name="material_type" required>
+                    <option value="">Select Material Type</option>
+                    <option value="Thermal Coal">Thermal Coal</option>
+                    <option value="Coking Coal">Coking Coal</option>
+                    <option value="Anthracite">Anthracite</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="total_quantity">Total Quantity Extracted (tons)</label>
+                <input type="text" class="form-control" id="total_quantity" name="total_quantity" placeholder="e.g., 1000" required>
+            </div>
+        </div>
+
+        <!-- Equipment and Resource Usage -->
+        <div class="form-section" id="section3">
+            <h4>Equipment and Resource Usage</h4>
+            <div class="form-group">
+                <label for="energy_consumption">Total Energy Consumption (kWh)</label>
+                <input type="text" class="form-control" id="energy_consumption" name="energy_consumption" placeholder="e.g., 1000" required>
+            </div>
+
+            <div class="form-group">
+                <label for="fuel_consumption">Total Fuel Consumption (liters)</label>
+                <input type="text" class="form-control" id="fuel_consumption" name="fuel_consumption" placeholder="e.g., 500" required>
+            </div>
+
+            <div class="form-group">
+                <label for="energy_grid_mix">Energy Grid Mix</label>
+                <select class="form-control" id="energy_grid_mix" name="energy_grid_mix" required>
+                    <option value="">Select Energy Grid Mix</option>
+                    <option value="coal">Coal</option>
+                    <option value="natural_gas">Natural Gas</option>
+                    <option value="renewable">Renewable</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="fuel_type">Type of Fuel Used</label>
+                <select class="form-control" id="fuel_type" name="fuel_type" required>
+                    <option value="">Select Fuel Type</option>
+                    <option value="Diesel">Diesel</option>
+                    <option value="Petrol">Petrol</option>
+                    <option value="LNG">LNG</option>
+                    <option value="CNG">CNG</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="explosives_type">Type of Explosives Used</label>
+                <select class="form-control" id="explosives_type" name="explosives_type" required>
+                    <option value="">Select Explosives Type</option>
+                    <option value="dynamite">Dynamite</option>
+                    <option value="ANFO">ANFO</option>
+                    <option value="emulsions">Emulsions</option>
+                    <option value="water_gels">Water Gels</option>
+                </select>
+            </div>
+
+            <!-- New Input Field -->
+            <div class="form-group">
+                <label for="explosives_amount">Total Amount of Explosives Used (kg)</label>
+                <input type="text" class="form-control" id="explosives_amount" name="explosives_amount" placeholder="e.g., 200" required>
+            </div>
+        </div>
+
+        <!-- Operational Metrics -->
+        <div class="form-section" id="section4">
+            <h4>Operational Metrics</h4>
+            <div class="form-group">
+                <label for="operational_hours">Total Operational Hours</label>
+                <input type="time" class="form-control" id="operational_hours" name="operational_hours" required>
+            </div>
+
+            <div class="form-group">
+                <label for="downtime_duration">Downtime Duration</label>
+                <input type="time" class="form-control" id="downtime_duration" name="downtime_duration" required>
+            </div>
+        </div>
+
+        <!-- Output and Efficiency -->
+        <div class="form-section" id="section5">
+            <h4>Output and Efficiency</h4>
+            <div class="form-group">
+                <label for="production_rate">Production Rate (tons/hour)</label>
+                <input type="text" class="form-control" id="production_rate" name="production_rate" placeholder="e.g., 50" required>
+            </div>
+
+            <div class="form-group">
+                <label for="trucks_loaded">Total Trucks Loaded</label>
+                <input type="text" class="form-control" id="trucks_loaded" name="trucks_loaded" placeholder="e.g., 25" required>
+            </div>
+
+            <div class="form-group">
+                <label for="distance_mined">Total Distance Mined (meters)</label>
+                <input type="text" class="form-control" id="distance_mined" name="distance_mined" placeholder="e.g., 300" required>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="form-navigation mt-3">
+            <button type="button" class="btn btn-primary" id="prevBtn" onclick="prevSection()" style="display:none;">Previous</button>
+            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextSection()">Next</button>
+            <button type="submit" class="btn btn-success" id="submitBtn" style="display:none;">Submit Activity</button>
+        </div>
+    </form>
+</div>
+
+<!-- Inline CSS to initially hide all sections except the first -->
+<style>
+    .form-section {
+        display: none;
+    }
+    .form-section:first-of-type {
+        display: block;
+    }
+</style>
+
+<script>
+    let currentSection = 0;
+
+    // Ensure only the first section is shown on page load
+    document.addEventListener("DOMContentLoaded", function () {
+        showSection(currentSection);
+    });
+
+    // Show the current section and manage button visibility
+    function showSection(n) {
+        let sections = document.getElementsByClassName("form-section");
+        
+        // Hide all sections first
+        for (let i = 0; i < sections.length; i++) {
+            sections[i].style.display = "none";
+        }
+
+        // Show the current section
+        sections[n].style.display = "block";
+
+        // Manage the visibility of buttons
+        document.getElementById("prevBtn").style.display = n == 0 ? "none" : "inline";
+        document.getElementById("nextBtn").style.display = n == (sections.length - 1) ? "none" : "inline";
+        document.getElementById("submitBtn").style.display = n == (sections.length - 1) ? "inline" : "none";
+    }
+
+    // Move to the next section
+    function nextSection() {
+        let sections = document.getElementsByClassName("form-section");
+        sections[currentSection].style.display = "none"; // Hide the current section
+        currentSection++;
+        showSection(currentSection); // Show the next section
+    }
+
+    // Move to the previous section
+    function prevSection() {
+        let sections = document.getElementsByClassName("form-section");
+        sections[currentSection].style.display = "none"; // Hide the current section
+        currentSection--;
+        showSection(currentSection); // Show the previous section
+    }
+</script>
+{% endblock content %}

@@ -1,0 +1,113 @@
+{% extends 'coal/base.html' %}
+{% load static %}
+{% block title %}
+    <title>Carbon Stats</title>
+{% endblock title %}
+
+{% block content %}
+<style>
+    #carbon {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        margin-top: 0;
+    }
+    #carbon-info {
+        display: flex;
+        justify-content: row;
+        flex-grow: 1; /* Allow it to grow and take full height */
+        height: 100%; /* Match the height of the sidebar */
+        align-items: stretch; /* Stretch the divs to match sidebar height */
+    }
+    #carbon-info > div {
+        background-color: pink;
+        height: 90px;
+        margin-left: 50px;
+        width: 200px; /* Same width as pie chart */
+        border-radius: 10px;
+        box-shadow: 2.5px 2.5px #d5d6d9;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #carbon-info h3 {
+        margin: 0;
+    }
+    #carbon-info p {
+        font-size: 0.6em; /* Smaller text size */
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0;
+        white-space: nowrap; /* Prevent line breaks */
+    }
+    #graphs {
+        margin-top: 20px;
+        background-color: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1; /* Allow the graphs section to grow and take full height */
+    }
+    #graphs-1 {
+        background-color: none;
+        display: flex;
+        flex-direction: row;
+        width: 100%; /* Make it full width */
+        justify-content: space-around; /* Space between elements */
+        margin-top: 20px;
+    }
+    #graph1 {
+        background-color: rebeccapurple;
+        width: 58%;
+        height: 400px; /* Define a height for the graph */
+        border-radius: 7px;
+        margin-right: 8px; /* Reduced margin between graph1 and pie chart */
+    }
+    #graph1 > img {
+        height: 100%;
+        width: 100%;
+        border-radius: 7px;
+    }
+    #piechart1 {
+        background-color: white;
+        width: 35%; /* Increased width to make it look proportional */
+        height: 400px; /* Maintain the same height */
+        border-radius: 7px;
+        margin-left: 0; /* Removed left margin to provide more space */
+    }
+    #piechart1 > img {
+        height: 100%;
+        width: 100%;
+        border-radius: 7px;
+    }
+</style>
+
+<div id="carbon">
+    <div id="carbon-info">
+        <div style="background-color: #e6e2ff; color: #3d3d40;">
+            <p>Total Fuel Used</p>
+            <h3>{{ total_fuel_consumption }} <small>liters</small></h3>
+        </div>
+        <div style="background-color: #effcef; color: #3d3d40;">
+            <p>Total Coal Extracted</p>
+            <h3>{{ total_coal_extracted }} <small>tons</small></h3>
+        </div>
+        <div style="background-color: #f9e6e6; color: #3d3d40;">
+            <p>Total Electricity Used</p>
+            <h3>{{ total_electricity_used }} <small>kWh</small></h3>
+        </div>
+        <div style="background-color: #1c1b20; color: #d5d5d6;">
+            <p>Total Carbon Emitted</p>
+            <h3>{{ total_carbon_emitted }} <small>kg</small></h3>
+        </div>
+    </div>
+    <div id="graphs">
+        <div id="graphs-1">
+            <div id="graph1"><img src="{{ emissions_url }}" alt=""></div>
+            <div id="piechart1"><img src="{% static 'pie_chart.png' %}" alt="Not available" id="graph2"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
