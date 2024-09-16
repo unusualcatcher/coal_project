@@ -2,7 +2,7 @@
 
 This Django-based web application estimates the total carbon emissions of various coal mines. The project provides a platform for entering coal mine data and calculating the carbon footprint based on key factors such as coal type, production levels, and other emission metrics.
 
-## Features ✨
+## Features 
 - Estimate total carbon emissions for coal mines.
 - Support for multiple coal types (e.g., coking coal, thermal coal).
 - User-friendly interface for inputting mine data.
